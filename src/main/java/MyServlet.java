@@ -11,42 +11,73 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
-//@WebServlet(urlPatterns = "/item")
+@WebServlet(urlPatterns = "/item")
 public class MyServlet extends HttpServlet {
     private ItemController itemController = new ItemController();
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-    }
-
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("Test");
+
+        String id = req.getParameter("object");
+
+        if (id.equals("all")) {
+            List<Item> items = itemController.get();
+
+            StringBuilder response = new StringBuilder("");
+            for (Item item : items) {
+                response.append(item.toString());
+            }
+
+            resp.getWriter().println(response);
+        } else {
+            try {
+                resp.getWriter().println(itemController.findById(Integer.parseInt(req.getParameter("object"))).toString());
+            } catch (Exception e) {
+                resp.getWriter().println(e.getMessage());
+            }
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        BufferedReader br = req.getReader();
+
+        Item newItem = new Item();
+        newItem.setName(br.readLine());
+        newItem.setDescription(br.readLine());
+
+        itemController.save(newItem);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        BufferedReader br = req.getReader();
+
+        Item newItem = new Item();
+        try {
+            newItem.setId(Long.parseLong(br.readLine()));
+        } catch (NumberFormatException e) {
+            resp.getWriter().println("Wrong enter id " + br.readLine() + ". " + e.getMessage());
+        }
+        newItem.setName(br.readLine());
+        newItem.setDescription(br.readLine());
+
+        try {
+            itemController.update(newItem);
+        } catch (Exception e) {
+            resp.getWriter().println(e.getMessage());
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+        BufferedReader br = req.getReader();
+        try {
+            itemController.delete(Long.parseLong(br.readLine()));
+        } catch (NumberFormatException e) {
+            resp.getWriter().println("Wrong enter id. Please use only numbers");
+        } catch (Exception e) {
+            resp.getWriter().println(e.getMessage());
+        }
     }
-
-    //servlet registration - init()
-    //servlet works with service method
-    //to close servlet with its resources - destroy()
-
-    //HTTP REQUESTS
-    // GET - get some info
-    // POST - save some info
-    // PUT - update some info
-    // DELETE - delete some info
 }

@@ -5,6 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 import utils.HibernateUtil;
 
 import javax.persistence.PersistenceException;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class ItemDAO {
 
-    private static final String getAllQuery = "SELECT * FROM ITEM";
+    private static final String getAllQuery = "FROM entity.Item";
 
     public void save(Item item) {
         try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
@@ -70,6 +71,7 @@ public class ItemDAO {
         } catch (HibernateException e) {
 //            System.err.println("Searching is failed");
 //            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
@@ -78,7 +80,7 @@ public class ItemDAO {
     public List<Item> get() {
         try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
 
-            NativeQuery query = session.createNativeQuery(getAllQuery);
+            Query query = session.createQuery(getAllQuery);
             return query.list();
 
         } catch (HibernateException e) {
