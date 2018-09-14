@@ -21,7 +21,7 @@ public class ItemService {
 
         Item updatedItem = itemDAO.findById(item.getId());
 
-        if(updatedItem == null)
+        if (updatedItem == null)
             throw new Exception("Item was not found");
 
         item.setDateCreated(updatedItem.getDateCreated());

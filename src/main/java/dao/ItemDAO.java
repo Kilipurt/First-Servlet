@@ -71,7 +71,6 @@ public class ItemDAO {
         } catch (HibernateException e) {
 //            System.err.println("Searching is failed");
 //            System.err.println(e.getMessage());
-            e.printStackTrace();
         }
 
         return null;
