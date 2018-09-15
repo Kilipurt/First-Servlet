@@ -1,14 +1,16 @@
 package controller;
 
 import entity.Item;
+import org.hibernate.HibernateException;
 import service.ItemService;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 public class ItemController {
     private ItemService itemService = new ItemService();
 
-    public void save(Item item) {
+    public void save(Item item) throws PersistenceException {
         itemService.save(item);
     }
 
@@ -29,7 +31,7 @@ public class ItemController {
         return item;
     }
 
-    public List<Item> get() {
+    public List<Item> get() throws HibernateException {
         return itemService.get();
     }
 }

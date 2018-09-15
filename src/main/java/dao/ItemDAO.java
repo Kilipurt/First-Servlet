@@ -4,7 +4,7 @@ import entity.Item;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.NativeQuery;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import utils.HibernateUtil;
 
@@ -15,7 +15,7 @@ public class ItemDAO {
 
     private static final String getAllQuery = "FROM entity.Item";
 
-    public void save(Item item) {
+    public void save(Item item) throws PersistenceException {
         try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
             Transaction tr = session.getTransaction();
             tr.begin();
@@ -24,14 +24,15 @@ public class ItemDAO {
 
             tr.commit();
         } catch (HibernateException e) {
-//            System.err.println("Saving is failed");
-//            System.err.println(e.getMessage());
+            System.err.println("Saving is failed");
+            throw e;
         } catch (PersistenceException e) {
-//            System.err.println("Object was not saved.\n" + e.getMessage());
+            System.err.println("Object was not saved.\n" + e.getMessage());
+            throw e;
         }
     }
 
-    public void delete(long id) {
+    public void delete(long id) throws HibernateException, IllegalArgumentException {
         try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
             Transaction tr = session.getTransaction();
             tr.begin();
@@ -40,14 +41,15 @@ public class ItemDAO {
 
             tr.commit();
         } catch (HibernateException e) {
-//            System.err.println("Deleting is failed");
-//            System.err.println(e.getMessage());
+            System.err.println("Deleting is failed");
+            throw e;
         } catch (IllegalArgumentException e) {
-//            System.err.println("Object " + id + " was not found");
+            System.err.println("Object " + id + " was not found");
+            throw e;
         }
     }
 
-    public void update(Item item) {
+    public void update(Item item) throws PersistenceException {
         try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
             Transaction tr = session.getTransaction();
             tr.begin();
@@ -56,37 +58,34 @@ public class ItemDAO {
 
             tr.commit();
         } catch (HibernateException e) {
-//            System.err.println("Updating is failed");
-//            System.err.println(e.getMessage());
+            System.err.println("Updating is failed");
+            throw e;
         } catch (PersistenceException e) {
-//            System.err.println("Object was not found or data is wrong");
+            System.err.println("Object was not found or data is wrong");
+            throw e;
         }
     }
 
-    public Item findById(long id) {
+    public Item findById(long id) throws HibernateException {
         try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
 
             return session.get(Item.class, id);
 
         } catch (HibernateException e) {
-//            System.err.println("Searching is failed");
-//            System.err.println(e.getMessage());
+            System.err.println("Searching is failed");
+            throw e;
         }
-
-        return null;
     }
 
-    public List<Item> get() {
+    public List<Item> get() throws HibernateException {
         try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
 
             Query query = session.createQuery(getAllQuery);
             return query.list();
 
         } catch (HibernateException e) {
-//            System.err.println("Searching is failed");
-//            System.err.println(e.getMessage());
+            System.err.println("Searching is failed");
+            throw e;
         }
-
-        return null;
     }
 }

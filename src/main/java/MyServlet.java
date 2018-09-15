@@ -1,7 +1,8 @@
 import controller.ItemController;
 import entity.Item;
+import org.hibernate.HibernateException;
 
-import javax.servlet.ServletConfig;
+import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,14 +22,21 @@ public class MyServlet extends HttpServlet {
         String id = req.getParameter("object");
 
         if (id.equals("all")) {
-            List<Item> items = itemController.get();
+            try {
+                List<Item> items = itemController.get();
 
-            StringBuilder response = new StringBuilder("");
-            for (Item item : items) {
-                response.append(item.toString());
+                StringBuilder response = new StringBuilder("");
+                for (int i = 0; i < items.size(); i++) {
+                    response.append(items.get(i).toString());
+
+                    if (i != items.size() - 1)
+                        response.append("\n");
+                }
+
+                resp.getWriter().println(response);
+            } catch (HibernateException e) {
+                resp.getWriter().println(e.getMessage());
             }
-
-            resp.getWriter().println(response);
         } else {
             try {
                 resp.getWriter().println(itemController.findById(Integer.parseInt(req.getParameter("object"))).toString());
@@ -46,7 +54,11 @@ public class MyServlet extends HttpServlet {
         newItem.setName(br.readLine());
         newItem.setDescription(br.readLine());
 
-        itemController.save(newItem);
+        try {
+            itemController.save(newItem);
+        } catch (PersistenceException e) {
+            resp.getWriter().println(e.getMessage());
+        }
     }
 
     @Override
