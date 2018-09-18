@@ -30,8 +30,4 @@ public class ItemController {
 
         return item;
     }
-
-    public List<Item> get() throws HibernateException {
-        return itemService.get();
-    }
 }

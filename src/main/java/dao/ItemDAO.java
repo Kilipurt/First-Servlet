@@ -24,11 +24,9 @@ public class ItemDAO {
 
             tr.commit();
         } catch (HibernateException e) {
-            System.err.println("Saving is failed");
-            throw e;
+            throw new HibernateException("Saving is failed");
         } catch (PersistenceException e) {
-            System.err.println("Object was not saved.\n" + e.getMessage());
-            throw e;
+            throw new PersistenceException("Object was not saved.\n" + e.getMessage());
         }
     }
 
@@ -41,11 +39,9 @@ public class ItemDAO {
 
             tr.commit();
         } catch (HibernateException e) {
-            System.err.println("Deleting is failed");
-            throw e;
+            throw new HibernateException("Deleting is failed");
         } catch (IllegalArgumentException e) {
-            System.err.println("Object " + id + " was not found");
-            throw e;
+            throw new IllegalArgumentException("Object " + id + " was not found");
         }
     }
 
@@ -58,11 +54,9 @@ public class ItemDAO {
 
             tr.commit();
         } catch (HibernateException e) {
-            System.err.println("Updating is failed");
-            throw e;
+            throw new HibernateException("Updating is failed");
         } catch (PersistenceException e) {
-            System.err.println("Object was not found or data is wrong");
-            throw e;
+            throw new PersistenceException("Object was not found or data is wrong");
         }
     }
 
@@ -72,20 +66,7 @@ public class ItemDAO {
             return session.get(Item.class, id);
 
         } catch (HibernateException e) {
-            System.err.println("Searching is failed");
-            throw e;
-        }
-    }
-
-    public List<Item> get() throws HibernateException {
-        try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
-
-            Query query = session.createQuery(getAllQuery);
-            return query.list();
-
-        } catch (HibernateException e) {
-            System.err.println("Searching is failed");
-            throw e;
+            throw new HibernateException("Searching is failed");
         }
     }
 }

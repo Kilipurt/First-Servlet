@@ -44,8 +44,4 @@ public class ItemService {
 
         return itemDAO.findById(id);
     }
-
-    public List<Item> get() throws HibernateException {
-        return itemDAO.get();
-    }
 }
