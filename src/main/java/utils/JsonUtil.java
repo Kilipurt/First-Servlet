@@ -33,7 +33,7 @@ public class JsonUtil {
 
         if (req.getMethod().equals("PUT")) {
             try {
-                item.setId(Long.parseLong(itemJson.get("id").toString()));
+                item.setId(Long.parseLong((String)itemJson.get("id")));
             } catch (NumberFormatException e) {
                 throw new NumberFormatException("Wrong enter id " + itemJson.get("id"));
             }
