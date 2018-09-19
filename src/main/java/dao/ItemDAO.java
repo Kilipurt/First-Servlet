@@ -9,7 +9,7 @@ import utils.HibernateUtil;
 import javax.persistence.PersistenceException;
 
 public class ItemDAO {
-    public void save(Item item) throws PersistenceException {
+    public void save(Item item) throws HibernateException {
         try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
             Transaction tr = session.getTransaction();
             tr.begin();
@@ -35,7 +35,7 @@ public class ItemDAO {
         }
     }
 
-    public void update(Item item) throws PersistenceException {
+    public void update(Item item) throws HibernateException {
         try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
             Transaction tr = session.getTransaction();
             tr.begin();

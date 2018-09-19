@@ -1,8 +1,8 @@
 import controller.ItemController;
 import entity.Item;
+import org.hibernate.HibernateException;
 import utils.JsonUtil;
 
-import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +29,7 @@ public class MyServlet extends HttpServlet {
         try {
             Item item = JsonUtil.getItem(JsonUtil.getJsonString(req));
             itemController.save(item);
-        } catch (PersistenceException e) {
+        } catch (HibernateException e) {
             resp.getWriter().println(e.getMessage());
         }
     }

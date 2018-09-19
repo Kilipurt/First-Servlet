@@ -2,14 +2,14 @@ package service;
 
 import dao.ItemDAO;
 import entity.Item;
+import org.hibernate.HibernateException;
 
-import javax.persistence.PersistenceException;
 import java.util.Date;
 
 public class ItemService {
     private ItemDAO itemDAO = new ItemDAO();
 
-    public void save(Item item) throws PersistenceException {
+    public void save(Item item) throws HibernateException {
         item.setDateCreated(new Date());
         item.setLastUpdatedDate(new Date());
         itemDAO.save(item);

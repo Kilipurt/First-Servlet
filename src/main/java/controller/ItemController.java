@@ -2,14 +2,13 @@ package controller;
 
 import entity.Item;
 
+import org.hibernate.HibernateException;
 import service.ItemService;
-
-import javax.persistence.PersistenceException;
 
 public class ItemController {
     private ItemService itemService = new ItemService();
 
-    public void save(Item item) throws PersistenceException {
+    public void save(Item item) throws HibernateException {
         itemService.save(item);
     }
 
