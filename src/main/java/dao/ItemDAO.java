@@ -22,8 +22,6 @@ public class ItemDAO {
             tr.commit();
         } catch (HibernateException e) {
             throw new HibernateException("Saving is failed");
-        } catch (PersistenceException e) {
-            throw new PersistenceException("Object was not saved.\n" + e.getMessage());
         }
     }
 
@@ -37,8 +35,6 @@ public class ItemDAO {
             tr.commit();
         } catch (HibernateException e) {
             throw new HibernateException("Deleting is failed");
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Object " + id + " was not found");
         }
     }
 
@@ -52,8 +48,6 @@ public class ItemDAO {
             tr.commit();
         } catch (HibernateException e) {
             throw new HibernateException("Updating is failed");
-        } catch (PersistenceException e) {
-            throw new PersistenceException("Object was not found or data is wrong");
         }
     }
 
