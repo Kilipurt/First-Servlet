@@ -1,15 +1,29 @@
 package utils;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.Item;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 
 public class JsonUtil {
+    private static ObjectMapper objectMapper;
+
+    public static Item getItem(String jsonContent) throws IOException {
+        objectMapper = createObjectMapper();
+
+        try {
+            return objectMapper.readValue(jsonContent, Item.class);
+        } catch (JsonParseException | JsonMappingException e) {
+            throw new IOException("Can't process json content");
+        } catch (IOException e) {
+            throw new IOException("Data was not read");
+        }
+    }
+
     public static String getJsonString(HttpServletRequest req) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -26,22 +40,10 @@ public class JsonUtil {
         }
     }
 
-    public static Item getItem(String response, HttpServletRequest req) throws ParseException {
-        JSONObject itemJson = (JSONObject) JSONValue.parseWithException(response);
+    private static ObjectMapper createObjectMapper() {
+        if (objectMapper == null)
+            objectMapper = new ObjectMapper();
 
-        Item item = new Item();
-
-        if (req.getMethod().equals("PUT")) {
-            try {
-                item.setId(Long.parseLong((String)itemJson.get("id")));
-            } catch (NumberFormatException e) {
-                throw new NumberFormatException("Wrong enter id " + itemJson.get("id"));
-            }
-        }
-
-        item.setName((String) itemJson.get("name"));
-        item.setDescription((String) itemJson.get("description"));
-
-        return item;
+        return objectMapper;
     }
 }

@@ -4,12 +4,9 @@ import entity.Item;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.query.Query;
 import utils.HibernateUtil;
 
 import javax.persistence.PersistenceException;
-import java.util.List;
 
 public class ItemDAO {
 

@@ -1,11 +1,10 @@
 package controller;
 
 import entity.Item;
-import org.hibernate.HibernateException;
+
 import service.ItemService;
 
 import javax.persistence.PersistenceException;
-import java.util.List;
 
 public class ItemController {
     private ItemService itemService = new ItemService();

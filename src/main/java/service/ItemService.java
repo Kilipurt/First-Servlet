@@ -2,11 +2,9 @@ package service;
 
 import dao.ItemDAO;
 import entity.Item;
-import org.hibernate.HibernateException;
 
 import javax.persistence.PersistenceException;
 import java.util.Date;
-import java.util.List;
 
 public class ItemService {
     private ItemDAO itemDAO = new ItemDAO();
@@ -18,6 +16,9 @@ public class ItemService {
     }
 
     public void update(Item item) throws Exception {
+        if(item.getId() == null)
+            throw new Exception("Id was not found. Please enter id.");
+
         if (item.getId() <= 0)
             throw new Exception("Wrong enter id " + item.getId() + ". Id must be above 0.");
 
