@@ -32,6 +32,8 @@ public class ItemDAO {
             tr.commit();
         } catch (HibernateException e) {
             throw new HibernateException("Deleting is failed");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Object with id " + id + " was not found");
         }
     }
 
