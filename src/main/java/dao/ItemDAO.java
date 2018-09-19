@@ -9,9 +9,6 @@ import utils.HibernateUtil;
 import javax.persistence.PersistenceException;
 
 public class ItemDAO {
-
-    private static final String getAllQuery = "FROM entity.Item";
-
     public void save(Item item) throws PersistenceException {
         try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
             Transaction tr = session.getTransaction();
