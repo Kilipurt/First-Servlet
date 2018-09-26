@@ -1,16 +1,19 @@
-package dao;
+package com.dao;
 
-import entity.Item;
+import com.entity.Item;
+import com.utils.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import utils.HibernateUtil;
-
-import javax.persistence.PersistenceException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ItemDAO {
+
+    @Autowired
+    private HibernateUtil hibernateUtil;
+
     public void save(Item item) throws HibernateException {
-        try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
+        try (Session session = hibernateUtil.createSessionFactory().openSession()) {
             Transaction tr = session.getTransaction();
             tr.begin();
 
@@ -23,7 +26,7 @@ public class ItemDAO {
     }
 
     public void delete(long id) throws HibernateException, IllegalArgumentException {
-        try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
+        try (Session session = hibernateUtil.createSessionFactory().openSession()) {
             Transaction tr = session.getTransaction();
             tr.begin();
 
@@ -38,7 +41,7 @@ public class ItemDAO {
     }
 
     public void update(Item item) throws HibernateException {
-        try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
+        try (Session session = hibernateUtil.createSessionFactory().openSession()) {
             Transaction tr = session.getTransaction();
             tr.begin();
 
@@ -51,7 +54,7 @@ public class ItemDAO {
     }
 
     public Item findById(long id) throws HibernateException {
-        try (Session session = new HibernateUtil().createSessionFactory().openSession()) {
+        try (Session session = hibernateUtil.createSessionFactory().openSession()) {
 
             return session.get(Item.class, id);
 

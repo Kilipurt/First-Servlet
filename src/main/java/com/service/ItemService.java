@@ -1,13 +1,16 @@
-package service;
+package com.service;
 
-import dao.ItemDAO;
-import entity.Item;
+import com.dao.ItemDAO;
+import com.entity.Item;
 import org.hibernate.HibernateException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
 public class ItemService {
-    private ItemDAO itemDAO = new ItemDAO();
+
+    @Autowired
+    private ItemDAO itemDAO;
 
     public void save(Item item) throws HibernateException {
         item.setDateCreated(new Date());
@@ -16,7 +19,7 @@ public class ItemService {
     }
 
     public void update(Item item) throws Exception {
-        if(item.getId() == null)
+        if (item.getId() == null)
             throw new Exception("Id was not found. Please enter id.");
 
         if (item.getId() <= 0)
@@ -43,6 +46,11 @@ public class ItemService {
         if (id <= 0)
             throw new Exception("Wrong enter id " + id + ". Id must be above 0.");
 
-        return itemDAO.findById(id);
+        Item item = itemDAO.findById(id);
+
+        if (item == null)
+            throw new Exception("Item with id " + id + " was not found");
+
+        return item;
     }
 }

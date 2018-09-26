@@ -1,18 +1,18 @@
-package utils;
+package com.utils;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import entity.Item;
+import com.entity.Item;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 
 public class JsonUtil {
-    private static ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
-    public static Item getItem(String jsonContent) throws IOException {
+    public Item getItem(String jsonContent) throws IOException {
         objectMapper = createObjectMapper();
 
         try {
@@ -24,7 +24,7 @@ public class JsonUtil {
         }
     }
 
-    public static String getJsonString(HttpServletRequest req) throws IOException {
+    public String getJsonString(HttpServletRequest req) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
 
         try (BufferedReader in = req.getReader()) {
@@ -40,7 +40,7 @@ public class JsonUtil {
         }
     }
 
-    private static ObjectMapper createObjectMapper() {
+    private ObjectMapper createObjectMapper() {
         if (objectMapper == null)
             objectMapper = new ObjectMapper();
 
